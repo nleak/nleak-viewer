@@ -4,7 +4,28 @@
   "description": "NLeak report viewer built with ReactJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "react-scripts start",
+    "eject": "react-scripts eject",
+    "build": "npm-run-all -p build:node build:viewer -s rollup:viewer rollup:viewer:production make_dist",
+    "build:node": "tsc -p tsconfig.node.json",
+    "build:viewer": "tsc",
+    "rollup:viewer": "rollup -c",
+    "rollup:viewer:production": "rollup -c --environment BUILD:production",
+    "test": "npm-run-all -s build nyc:test",
+    "nyc:test": "nyc mocha --require source-map-support/register build/node/test",
+    "watch": "npm-run-all -s build -p tsc:viewer:watch tsc:watch rollup:viewer:watch rollup:viewer:production:watch make_dist:watch",
+    "tsc:watch": "tsc -w",
+    "tsc:viewer:watch": "tsc -w -p tsconfig.node.json",
+    "rollup:viewer:watch": "rollup -w -c",
+    "rollup:viewer:production:watch": "rollup -w -c --environment BUILD:production",
+    "benchmark": "npm-run-all build:node -s run:benchmark",
+    "run:benchmark": "node --max-old-space-size=8192 build/node/benchmarks/benchmark.js",
+    "make_dist": "node build/node/scripts/make_dist.js",
+    "make_dist:watch": "node build/node/scripts/make_dist.js --watch",
+    "prepare": "npm-run-all build",
+    "test:travis": "npm-run-all -s test coveralls",
+    "coveralls": "nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls"
   },
   "repository": {
     "type": "git",
@@ -20,10 +41,13 @@
     "react": "^18.2.0",
     "react-ace": "^10.1.0",
     "react-dom": "^18.2.0",
-    "react-treeview": "^0.4.7"
+    "react-treeview": "^0.4.7",
+    "react-scripts": "5.0.1"
+    
   },
   "devDependencies": {
     "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.8"
+    "@types/react-dom": "^18.0.8",
+    "npm-run-all": "~4.1.3"
   }
 }
