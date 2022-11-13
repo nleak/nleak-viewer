@@ -5,7 +5,7 @@ import {default as AceEditor, Annotation as AceAnnotation} from 'react-ace';
 import StackTraceManager from '../model/stack_trace_manager';
 import SourceFile from '../model/source_file';
 import StackFrame from '../model/stack_frame';
-import pathToString from '../../lib/path_to_string';
+import pathToString from '../lib/path_to_string';
 import Location from '../model/location';
 import {acequire} from 'brace';
 import 'brace/mode/javascript';

@@ -1,4 +1,4 @@
-import BLeakResults from '../../lib/bleak_results';
+import BLeakResults from '../lib/bleak_results';
 import {default as FormatWorker, FormatterSourceMapping} from './../formatter';
 import SourceFile from './source_file';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import LeakRoot from '../../lib/leak_root';
-import pathToString from '../../lib/path_to_string';
+import LeakRoot from '../lib/leak_root';
+import pathToString from '../lib/path_to_string';
 import StackTraceComponent from './stack_trace';
 import StackFrame from '../model/stack_frame';
 import Location from '../model/location';

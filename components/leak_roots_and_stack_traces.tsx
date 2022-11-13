@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BLeakResults from '../../lib/bleak_results';
+import BLeakResults from '../lib/bleak_results';
 import LeakRootList from './leak_root_list';
 import Location from '../model/location';
 import StackFrame from '../model/stack_frame';

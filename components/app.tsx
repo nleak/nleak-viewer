@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BLeakResults from '../../lib/bleak_results';
+import BLeakResults from '../lib/bleak_results';
 import {default as HeapGrowthGraph, isRankingEvaluationComplete} from './heap_growth_graph';
 import LeakRootsAndStackTraces from './leak_roots_and_stack_traces';
 import SourceCodeViewer from './source_code_view';

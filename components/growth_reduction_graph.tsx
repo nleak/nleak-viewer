@@ -1,8 +1,8 @@
 import * as React from 'react';
-import BLeakResults from '../../lib/bleak_results';
+import BLeakResults from '../lib/bleak_results';
 import {scaleLinear as d3ScaleLinear, line as d3Line, select as d3Select,
         axisBottom, axisLeft, mean, deviation, max, zip as d3Zip, range as d3Range, min} from 'd3';
-import {SnapshotSizeSummary} from '../../common/interfaces';
+import {SnapshotSizeSummary} from '../common/interfaces';
 
 interface GrowthReductionGraphProps {
   bleakResults: BLeakResults;
