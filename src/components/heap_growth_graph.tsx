@@ -252,7 +252,7 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
         .attr('title', (d) => `${lines[i].name} Iteration ${d[0]}: ${self._presentStat(d[1], 'MB', hasError ? d[2] : undefined)}`)
         .each((_, __, g) => {
           for (let i = 0; i < g.length; i++) {
-            $(g[i]).tooltip();
+            (<any>$(g[i])).tooltip();
           }
         });
 
