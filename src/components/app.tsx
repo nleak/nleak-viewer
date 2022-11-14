@@ -53,9 +53,7 @@ export default class App extends React.Component<{}, AppState> {
         progressMessage: `${completed} of ${total} source files formatted...`
       });
     });
-    console.log("============== here 1")
     const sourceFiles = sourceFileManager.getSourceFiles();
-    console.log("============== here 2")
     const stackTraces = StackTraceManager.FromBLeakResults(sourceFileManager, bleakResults);
     this.setState({
       state: ViewState.DISPLAYING_FILE,
@@ -64,7 +62,6 @@ export default class App extends React.Component<{}, AppState> {
       stackTraces,
       selectedLocation: new Location(sourceFiles[0], 1, 1, true)
     });
-    console.log("============== here 3")
   }
 
   private _loadFromUrl(url: string): void {
@@ -153,15 +150,15 @@ export default class App extends React.Component<{}, AppState> {
   public render() {
     const rankEvalComplete = this.state.state === ViewState.DISPLAYING_FILE && isRankingEvaluationComplete(this.state.bleakResults);
     return <div>
-      <nav className="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a className="navbar-brand" href="/"><img src="icon.svg" className="icon" /> BLeak Results Viewer</a>
+      <nav className="navbar navbar-expand-md navbar-dark fixed-top" style={{ background: "#005baf"}}>
+        <a className="navbar-brand" href="/">NLeak Results Viewer</a>
       </nav>
 
-      <main role="main" className="container-fluid">
+      <main role="main" className="container-fluid" style={{ padding: "3rem 5rem"}}>
         {this.state.state === ViewState.WAIT_FOR_FILE || this.state.state === ViewState.PROCESSING_FILE ?
-          <div className="jumbotron" key="bleakUpload">
+          <div className="jumbotron" key="bleakUpload" style={{ padding: "3rem"}}>
             <h1 className="display-4">Upload Results File</h1>
-            <p className="lead">Upload bleak_results.json from a BLeak run to view the results.</p>
+            <p className="lead">Upload nleak_results.json from a NLeak run to view the results.</p>
             <hr className="my-4" />
             <form className={"needs-validation" + (this.state.errorMessage ? " was-validated" : "")}>
               {this.state.state === ViewState.PROCESSING_FILE ?

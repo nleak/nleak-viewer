@@ -27,11 +27,9 @@ export default class SourceFileManager {
           resolve(sfm);
         }
       }
-      console.log("============== SourceFileManager here 1")
       // Assumption: We're on a ~2 core machine, so let's work it a bit
       // w/ two parallel format requests.
       const workers = await Promise.all([FormatWorker.Create(), FormatWorker.Create()]);
-      console.log("============== SourceFileManager here 2")
       for (let i = 0; i < sourceFiles.length; i++) {
         const sourceFile = sourceFiles[i];
         const fileContents = results.sourceFiles[sourceFile];
