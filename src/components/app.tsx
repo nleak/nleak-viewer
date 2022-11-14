@@ -42,7 +42,10 @@ export default class App extends React.Component<{}, AppState> {
   }
 
   private async _tryDisplayFile(result: string, startingPercent: number): Promise<void> {
-    const bleakResults = BLeakResults.FromJSON(JSON.parse(result));
+    const json = JSON.parse(result);
+    const bleakResults = BLeakResults.FromJSON(json);
+    console.log('=============== after parsing result', bleakResults)
+
     const sourceFileManager = await SourceFileManager.FromBLeakResults(bleakResults, (completed, total) => {
       const percent = startingPercent + (completed / total) * (100 - startingPercent);
       this.setState({
@@ -50,7 +53,9 @@ export default class App extends React.Component<{}, AppState> {
         progressMessage: `${completed} of ${total} source files formatted...`
       });
     });
+    console.log("============== here 1")
     const sourceFiles = sourceFileManager.getSourceFiles();
+    console.log("============== here 2")
     const stackTraces = StackTraceManager.FromBLeakResults(sourceFileManager, bleakResults);
     this.setState({
       state: ViewState.DISPLAYING_FILE,
@@ -59,6 +64,7 @@ export default class App extends React.Component<{}, AppState> {
       stackTraces,
       selectedLocation: new Location(sourceFiles[0], 1, 1, true)
     });
+    console.log("============== here 3")
   }
 
   private _loadFromUrl(url: string): void {
@@ -115,6 +121,7 @@ export default class App extends React.Component<{}, AppState> {
         progressMessage: "Reading in file...",
         errorMessage: null
       });
+
       const file = files[0];
       const reader = new FileReader();
       reader.onload = async (e) => {

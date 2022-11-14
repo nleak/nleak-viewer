@@ -70,7 +70,8 @@ export default class FormatWorker {
   private _queue: PendingFormatRequest[] = [];
   private constructor(ready: (worker: FormatWorker) => void) {
     // Use the original, unmodified worker code from Chrome devtools.
-    this._w = new Worker("chrome-devtools-frontend/front_end/formatter_worker.js");
+    this._w = new Worker("formatter/formatter_worker.js");
+    console.log('------------ formatter worker created', JSON.stringify(this._w, null, 2));
     this._w.onmessage = (e) => {
       if (e.data === "workerReady") {
         return ready(this);
