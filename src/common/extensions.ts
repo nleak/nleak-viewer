@@ -19,7 +19,7 @@ interface GrowingStackTraces {
 /**
  * Represents the type of a heap path segment.
  */
-const enum PathSegmentType {
+export enum PathSegmentType {
   // Object property
   PROPERTY = 1,
   // Array element

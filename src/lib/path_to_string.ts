@@ -1,4 +1,6 @@
 import { IPath } from "../common/interfaces";
+import { PathSegmentType } from "../common/extensions";
+
 
 const r = /'/g;
 /**
