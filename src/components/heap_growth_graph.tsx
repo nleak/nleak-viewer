@@ -1,11 +1,19 @@
 import * as React from 'react';
 import BLeakResults from '../lib/results';
-import {scaleLinear as d3ScaleLinear, line as d3Line, select as d3Select,
-        axisBottom, axisLeft, mean, deviation, max, min, zip as d3Zip, range as d3Range} from 'd3';
+// import {scaleLinear as d3ScaleLinear, line as d3Line, select as d3Select,
+//         axisBottom, axisLeft, mean, deviation, max, min, zip as d3Zip, range as d3Range} from 'd3';
+import {mean, deviation, max, min} from 'd3';
+import { Chart, ChartData, ChartOptions } from "chart.js";
+import { Doughnut } from 'react-chartjs-2';
 import {SnapshotSizeSummary} from '../common/interfaces';
 
 interface HeapGrowthGraphProps {
   bleakResults: BLeakResults;
+}
+
+interface LineProps{
+	options: ChartOptions<'line'>;
+	data: ChartData<'line'>;
 }
 
 interface Line {
@@ -190,16 +198,17 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
     if (!this._hasHeapStats()) {
       return;
     }
-    const d3div = this.refs['d3_div'] as HTMLDivElement;
-    if (d3div.childNodes && d3div.childNodes.length > 0) {
+    // const d3div = this.refs['d3_div'] as HTMLDivElement;
+	const chartdiv = this.refs['chart_div'] as HTMLDivElement;
+    if (chartdiv.childNodes && chartdiv.childNodes.length > 0) {
       const nodes: Node[] = [];
-      for (let i = 0; i < d3div.childNodes.length; i++) {
-        nodes.push(d3div.childNodes[i]);
+      for (let i = 0; i < chartdiv.childNodes.length; i++) {
+        nodes.push(chartdiv.childNodes[i]);
       }
-      nodes.forEach((n) => d3div.removeChild(n));
+      nodes.forEach((n) => chartdiv.removeChild(n));
     }
 
-    const svg = d3Select(d3div).append<SVGElement>("svg");
+    const svg = d3Select(chartdiv).append<SVGElement>("svg");
     const svgStyle = getComputedStyle(svg.node());
     const margins = {left: 65, right: 20, top: 10, bottom: 35};
     const svgHeight = parseFloat(svgStyle.height);
@@ -394,6 +403,36 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
     }
   }
 
+  private lineChart(canvas: HTMLCanvasElement) {
+	const chart = new Chart(canvas, {
+		type: 'line',
+		data: {
+			datasets: [{
+				label: '# of round trips',
+				data: BLeakResults,
+				// hide the color under the line
+				backgroundColor: "rgba(0, 0, 0, 0)",
+				// line color
+				borderColor: "rgb(255, 170, 100)",
+				pointStyle: 'triangle',
+				// point background color
+				pointBackgroundColor: "rgba(200, 255, 255, 1)",
+				// I also can use color name
+				pointBorderColor: 'green',
+				pointHoverBackgroundColor: "rgba(100, 170, 100, 0.2)",
+				// hovered point size
+				pointHoverRadius: 7,
+				borderWidth: 1.2,
+				pointHoverBorderColor: "rgb(100, 170, 100)",
+				pointHoverBorderWidth: 2,
+				// make the line straight
+				lineTension: 0,
+			}]
+		}
+	});
+}
+
+
   private _hasHeapStats(): boolean {
     return !!this.props.bleakResults.heapStats && this.props.bleakResults.heapStats.length > 0;
   }
@@ -412,7 +451,7 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
           (The above stats ignore the impact of first 5 heap snapshots, which are typically noisy due to application startup + JavaScript engine warmup)
         </div>
       : ''}
-      <div ref="d3_div" className="heap-growth-graph">
+      <div ref="chart_div" className="heap-growth-graph">
         <div className={this._hasHeapStats() ? 'hidden' : ''}>
           Results file does not contain any heap growth information. Please re-run in the newest version of BLeak.
         </div>
