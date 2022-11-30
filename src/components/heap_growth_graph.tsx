@@ -3,8 +3,9 @@ import BLeakResults from '../lib/results';
 // import {scaleLinear as d3ScaleLinear, line as d3Line, select as d3Select,
 //         axisBottom, axisLeft, mean, deviation, max, min, zip as d3Zip, range as d3Range} from 'd3';
 import {mean, deviation, max, min} from 'd3';
+import styled from "@emotion/styled";
 import { Chart, ChartData, ChartOptions } from "chart.js";
-import { Doughnut } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import {SnapshotSizeSummary} from '../common/interfaces';
 
 interface HeapGrowthGraphProps {
@@ -198,8 +199,7 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
     if (!this._hasHeapStats()) {
       return;
     }
-    // const d3div = this.refs['d3_div'] as HTMLDivElement;
-	const chartdiv = this.refs['chart_div'] as HTMLDivElement;
+	const chartdiv = this.refs['chart'] as HTMLDivElement;
     if (chartdiv.childNodes && chartdiv.childNodes.length > 0) {
       const nodes: Node[] = [];
       for (let i = 0; i < chartdiv.childNodes.length; i++) {
@@ -208,229 +208,259 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
       nodes.forEach((n) => chartdiv.removeChild(n));
     }
 
-    const svg = d3Select(chartdiv).append<SVGElement>("svg");
-    const svgStyle = getComputedStyle(svg.node());
-    const margins = {left: 65, right: 20, top: 10, bottom: 35};
-    const svgHeight = parseFloat(svgStyle.height);
-    const svgWidth = parseFloat(svgStyle.width);
-    const radius = 3;
-    const tickSize = 6;
-    const lines = distillResults(this.props.bleakResults);
+    // const svg = d3Select(d3div).append<SVGElement>("svg");
+    // const svgStyle = getComputedStyle(svg.node());
+    // const margins = {left: 65, right: 20, top: 10, bottom: 35};
+    // const svgHeight = parseFloat(svgStyle.height);
+    // const svgWidth = parseFloat(svgStyle.width);
+    // const radius = 3;
+    // const tickSize = 6;
+    // const lines = distillResults(this.props.bleakResults);
+    
+    // const margins = {left: 65, right: 20, top: 10, bottom: 35};
+    // const radius = 3;
+    // const tickSize = 6;
+    // const lines = distillResults(this.props.bleakResults);
+
+    // const maxHeapSize = 1.02 * max(lines.map((l) => max(l.value.map((v, i) => v + (l.se ? (1.96 * l.se[i]) : 0)))));
+    // const minHeapSize = 0.98 * min(lines.map((l) => min(l.value.map((v, i) => v - (l.se ? (1.96 * l.se[i]) : 0)))));
+
+    // const maxHeapSize = 1.02 * max(lines.map((l) => max(l.value.map((v, i) => v + (l.se ? (1.96 * l.se[i]) : 0)))));
+    // const minHeapSize = 0.98 * min(lines.map((l) => min(l.value.map((v, i) => v - (l.se ? (1.96 * l.se[i]) : 0)))));
+
+//     const plotWidth = svgWidth - margins.left - margins.right;
+//     const plotHeight = svgHeight - margins.top - margins.bottom;
+
+//     const x = d3ScaleLinear()
+//       .range([0, plotWidth])
+//       .domain([0, lines[0].value.length - 1]);
+//     const y = d3ScaleLinear().range([plotHeight, 0])
+//       .domain([minHeapSize, maxHeapSize]);
+
+//     const valueline = d3Line<[number, number, number]>()
+//       .x(function(d) { return x(d[0]); })
+//       .y(function(d) { return y(d[1]); });
+
+//     const data = lines.map((l): [number, number, number][] =>
+//       d3Zip(d3Range(0, l.value.length), l.value, l.se ? l.se : d3Range(0, l.value.length)) as [number, number, number][]
+//     );
+
+//     const g = svg.append("g").attr('transform', `translate(${margins.left}, ${margins.top})`);
+
+//     const plots = g.selectAll("g.plot")
+//       .data(data)
+//       .enter()
+//       .append('g')
+//       .attr('class', (d, i) => `plot plot_${i}`);
+
+//     const hasError = !!lines[0].se;
+//     const self = this;
+//     function drawPointsAndErrorBars(this: Element, d: [number, number, number][], i: number): void {
+//       // Prevent overlapping points / bars
+//       const move = i * 5;
+//       const g = d3Select(this)
+//         .selectAll('circle')
+//         .data(d)
+//         .enter()
+//         .append('g')
+//         .attr('class', 'data-point')
+//         .attr('data-placement', 'left')
+//         .attr('title', (d) => `${lines[i].name} Iteration ${d[0]}: ${self._presentStat(d[1], 'MB', hasError ? d[2] : undefined)}`)
+//         .each((_, __, g) => {
+//           for (let i = 0; i < g.length; i++) {
+//             $(g[i]).tooltip();
+//           }
+//         });
+
+//       g.append('circle')
+//         .attr('r', radius)
+//         .attr('cx', (d) => x(d[0]) + move)
+//         .attr('cy', (d) => y(d[1]));
+
+//       if (hasError) {
+//         // Straight line
+//         g.append("line")
+//           .attr("class", "error-line")
+//           .attr("x1", function(d) {
+//             return x(d[0]) + move;
+//           })
+//           .attr("y1", function(d) {
+//             return y(d[1] + (1.96 * d[2]));
+//           })
+//           .attr("x2", function(d) {
+//             return x(d[0]) + move;
+//           })
+//           .attr("y2", function(d) {
+//             return y(d[1] - (1.96 * d[2]));
+//           });
+
+//         // Top cap
+//         g.append("line")
+//           .attr("class", "error-cap")
+//           .attr("x1", function(d) {
+//             return x(d[0]) - 4 + move;
+//           })
+//           .attr("y1", function(d) {
+//             return y(d[1] + (1.96 * d[2]));
+//           })
+//           .attr("x2", function(d) {
+//             return x(d[0]) + 4 + move;
+//           })
+//           .attr("y2", function(d) {
+//             return y(d[1] + (1.96 * d[2]));
+//           });
+
+//         // Bottom cap
+//         g.append("line")
+//           .attr("class", "error-cap")
+//           .attr("x1", function(d) {
+//             return x(d[0]) - 4 + move;
+//           })
+//           .attr("y1", function(d) {
+//             return y(d[1] - (1.96 * d[2]));
+//           })
+//           .attr("x2", function(d) {
+//             return x(d[0]) + 4 + move;
+//           })
+//           .attr("y2", function(d) {
+//             return y(d[1] - (1.96 * d[2]));
+//           });
+//       }
+//     }
+
+//     plots.append('path')
+//       .attr("class", 'line')
+//       .attr("d", valueline);
+
+//     plots.each(drawPointsAndErrorBars);
 
 
-    const maxHeapSize = 1.02 * max(lines.map((l) => max(l.value.map((v, i) => v + (l.se ? (1.96 * l.se[i]) : 0)))));
-    const minHeapSize = 0.98 * min(lines.map((l) => min(l.value.map((v, i) => v - (l.se ? (1.96 * l.se[i]) : 0)))));
+//     // Add the X Axis
+//     g.append("g")
+//       .attr('class', 'xaxis')
+//       .attr("transform", `translate(0,${plotHeight})`)
+//       .call(axisBottom(x).tickSizeOuter(tickSize).tickFormat((n) => {
+//         let val = typeof(n) === 'number' ? n : n.valueOf();
+//         if (Math.floor(val) !== val) {
+//           // Drop the tick mark.
+//           return undefined as any;
+//         }
+//         return n;
+//       }));
 
-    const plotWidth = svgWidth - margins.left - margins.right;
-    const plotHeight = svgHeight - margins.top - margins.bottom;
+//     // Add the Y Axis
+//     g.append("g")
+//       .attr('class', 'yaxis')
+//       .call(axisLeft(y).tickSizeOuter(tickSize).tickFormat((n) => `${n} MB`));
 
-    const x = d3ScaleLinear()
-      .range([0, plotWidth])
-      .domain([0, lines[0].value.length - 1]);
-    const y = d3ScaleLinear().range([plotHeight, 0])
-      .domain([minHeapSize, maxHeapSize]);
+//     // Add X axis title
+//     g.append('text')
+//       .attr('class', 'xtitle')
+//       .attr('x', plotWidth >> 1)
+//       .attr('y', 32) // Approximate height of x axis
+//       .attr('transform', `translate(0, ${plotHeight})`)
+//       .style('text-anchor', 'middle')
+//       .text('Round Trips Completed');
 
-    const valueline = d3Line<[number, number, number]>()
-      .x(function(d) { return x(d[0]); })
-      .y(function(d) { return y(d[1]); });
-
-    const data = lines.map((l): [number, number, number][] =>
-      d3Zip(d3Range(0, l.value.length), l.value, l.se ? l.se : d3Range(0, l.value.length)) as [number, number, number][]
-    );
-
-    const g = svg.append("g").attr('transform', `translate(${margins.left}, ${margins.top})`);
-
-    const plots = g.selectAll("g.plot")
-      .data(data)
-      .enter()
-      .append('g')
-      .attr('class', (d, i) => `plot plot_${i}`);
-
-    const hasError = !!lines[0].se;
-    const self = this;
-    function drawPointsAndErrorBars(this: Element, d: [number, number, number][], i: number): void {
-      // Prevent overlapping points / bars
-      const move = i * 5;
-      const g = d3Select(this)
-        .selectAll('circle')
-        .data(d)
-        .enter()
-        .append('g')
-        .attr('class', 'data-point')
-        .attr('data-placement', 'left')
-        .attr('title', (d) => `${lines[i].name} Iteration ${d[0]}: ${self._presentStat(d[1], 'MB', hasError ? d[2] : undefined)}`)
-        .each((_, __, g) => {
-          for (let i = 0; i < g.length; i++) {
-            $(g[i]).tooltip();
-          }
-        });
-
-      g.append('circle')
-        .attr('r', radius)
-        .attr('cx', (d) => x(d[0]) + move)
-        .attr('cy', (d) => y(d[1]));
-
-      if (hasError) {
-        // Straight line
-        g.append("line")
-          .attr("class", "error-line")
-          .attr("x1", function(d) {
-            return x(d[0]) + move;
-          })
-          .attr("y1", function(d) {
-            return y(d[1] + (1.96 * d[2]));
-          })
-          .attr("x2", function(d) {
-            return x(d[0]) + move;
-          })
-          .attr("y2", function(d) {
-            return y(d[1] - (1.96 * d[2]));
-          });
-
-        // Top cap
-        g.append("line")
-          .attr("class", "error-cap")
-          .attr("x1", function(d) {
-            return x(d[0]) - 4 + move;
-          })
-          .attr("y1", function(d) {
-            return y(d[1] + (1.96 * d[2]));
-          })
-          .attr("x2", function(d) {
-            return x(d[0]) + 4 + move;
-          })
-          .attr("y2", function(d) {
-            return y(d[1] + (1.96 * d[2]));
-          });
-
-        // Bottom cap
-        g.append("line")
-          .attr("class", "error-cap")
-          .attr("x1", function(d) {
-            return x(d[0]) - 4 + move;
-          })
-          .attr("y1", function(d) {
-            return y(d[1] - (1.96 * d[2]));
-          })
-          .attr("x2", function(d) {
-            return x(d[0]) + 4 + move;
-          })
-          .attr("y2", function(d) {
-            return y(d[1] - (1.96 * d[2]));
-          });
-      }
-    }
-
-    plots.append('path')
-      .attr("class", 'line')
-      .attr("d", valueline);
-
-    plots.each(drawPointsAndErrorBars);
+//     // Add Y axis title
+//     g.append('text')
+//       .attr('class', 'ytitle')
+//       .attr('x', -1 * (plotHeight >> 1)) // x and y are flipped because of rotation
+//       .attr('y', -58) // Approximate width of y-axis
+//       .attr('transform', 'rotate(-90)')
+//       .style('text-anchor', 'middle')
+//       .style('alignment-baseline', 'central')
+//       .text('Live Heap Size');
 
 
-    // Add the X Axis
-    g.append("g")
-      .attr('class', 'xaxis')
-      .attr("transform", `translate(0,${plotHeight})`)
-      .call(axisBottom(x).tickSizeOuter(tickSize).tickFormat((n) => {
-        let val = typeof(n) === 'number' ? n : n.valueOf();
-        if (Math.floor(val) !== val) {
-          // Drop the tick mark.
-          return undefined as any;
-        }
-        return n;
-      }));
+//     if (lines.length > 1) {
+//       // Put up a legend
+//       const legend = g.append('g')
+//         .attr('class', 'legend')
+//         .attr('transform', `translate(15, 15)`);
 
-    // Add the Y Axis
-    g.append("g")
-      .attr('class', 'yaxis')
-      .call(axisLeft(y).tickSizeOuter(tickSize).tickFormat((n) => `${n} MB`));
+//       const rect = legend.append('rect');
 
-    // Add X axis title
-    g.append('text')
-      .attr('class', 'xtitle')
-      .attr('x', plotWidth >> 1)
-      .attr('y', 32) // Approximate height of x axis
-      .attr('transform', `translate(0, ${plotHeight})`)
-      .style('text-anchor', 'middle')
-      .text('Round Trips Completed');
+//       const legendItems = legend.append<SVGGElement>('g')
+//         .attr('class', 'legend-items');
 
-    // Add Y axis title
-    g.append('text')
-      .attr('class', 'ytitle')
-      .attr('x', -1 * (plotHeight >> 1)) // x and y are flipped because of rotation
-      .attr('y', -58) // Approximate width of y-axis
-      .attr('transform', 'rotate(-90)')
-      .style('text-anchor', 'middle')
-      .style('alignment-baseline', 'central')
-      .text('Live Heap Size');
+//       const liWithData = legendItems.selectAll('text')
+//         .data(lines)
+//         .enter();
+
+//       liWithData.append('text')
+//         .attr('x', '1.3em')
+//         .attr('y', (l, i) => `${i}em`)
+//         .text((l) => l.name);
+
+//       liWithData.append('line')
+//         .attr('class', (_, i) => `plot_${i}`)
+//         .attr('x1', 0)
+//         .attr('y1', (d, i) => `${i - 0.3}em`)
+//         .attr('x2', `1em`)
+//         .attr('y2', (d, i) => `${i - 0.3}em`);
+
+//       // x, y, height, width
+//       const bbox = legendItems.node().getBBox();
+//       rect.attr('x', bbox.x - 5)
+//         .attr('y', bbox.y - 5)
+//         .attr('height', bbox.height + 10)
+//         .attr('width', bbox.width + 10);
+
+//     }
+//   }
+
+	interface barProps{
+		bleakresult: Line[];
+	}
+
+	const options = {
+		responsive: true,
+		plugins: {
+		legend: {
+			position: 'top' as const,
+		},
+		title: {
+			display: true,
+			text: 'Chart.js Bar Chart',
+		},
+		},
+	};
 
 
-    if (lines.length > 1) {
-      // Put up a legend
-      const legend = g.append('g')
-        .attr('class', 'legend')
-        .attr('transform', `translate(15, 15)`);
+	const ChartWrapper = styled.div`
+	max-width: 700px; margin: 0 auto;
+	`;
 
-      const rect = legend.append('rect');
+	const distllbleak = distillResults(this.props.bleakResults);
+	const barChart: React.FunctionComponent<barProps> = ({distllbleak})=> {
+		const generateData = ()=>{
+			const data: number[] = [];
+			const labels: string[] = [];
 
-      const legendItems = legend.append<SVGGElement>('g')
-        .attr('class', 'legend-items');
+			distllbleak.foreach((distillbleakline)=>{
+				data.push(distillbleakline.value);
+				labels.push(distillbleakline.name);
+			})
 
-      const liWithData = legendItems.selectAll('text')
-        .data(lines)
-        .enter();
-
-      liWithData.append('text')
-        .attr('x', '1.3em')
-        .attr('y', (l, i) => `${i}em`)
-        .text((l) => l.name);
-
-      liWithData.append('line')
-        .attr('class', (_, i) => `plot_${i}`)
-        .attr('x1', 0)
-        .attr('y1', (d, i) => `${i - 0.3}em`)
-        .attr('x2', `1em`)
-        .attr('y2', (d, i) => `${i - 0.3}em`);
-
-      // x, y, height, width
-      const bbox = legendItems.node().getBBox();
-      rect.attr('x', bbox.x - 5)
-        .attr('y', bbox.y - 5)
-        .attr('height', bbox.height + 10)
-        .attr('width', bbox.width + 10);
-
-    }
-  }
-
-  private lineChart(canvas: HTMLCanvasElement) {
-	const chart = new Chart(canvas, {
-		type: 'line',
-		data: {
-			datasets: [{
-				label: '# of round trips',
-				data: BLeakResults,
-				// hide the color under the line
-				backgroundColor: "rgba(0, 0, 0, 0)",
-				// line color
-				borderColor: "rgb(255, 170, 100)",
-				pointStyle: 'triangle',
-				// point background color
-				pointBackgroundColor: "rgba(200, 255, 255, 1)",
-				// I also can use color name
-				pointBorderColor: 'green',
-				pointHoverBackgroundColor: "rgba(100, 170, 100, 0.2)",
-				// hovered point size
-				pointHoverRadius: 7,
-				borderWidth: 1.2,
-				pointHoverBorderColor: "rgb(100, 170, 100)",
-				pointHoverBorderWidth: 2,
-				// make the line straight
-				lineTension: 0,
-			}]
+			return {
+				labels,
+				datasets: [
+				{
+					label: "Heap Size",
+					data,
+				},
+				]
+			}
 		}
-	});
-}
+
+		return (
+			<ChartWrapper>
+				<Bar type="bar" data={generateData()} options={options}/>
+			</ChartWrapper>
+		);
+	};
+  }
 
 
   private _hasHeapStats(): boolean {
@@ -451,7 +481,7 @@ export default class HeapGrowthGraph extends React.Component<HeapGrowthGraphProp
           (The above stats ignore the impact of first 5 heap snapshots, which are typically noisy due to application startup + JavaScript engine warmup)
         </div>
       : ''}
-      <div ref="chart_div" className="heap-growth-graph">
+      <div ref="chart" className="heap-growth-graph">
         <div className={this._hasHeapStats() ? 'hidden' : ''}>
           Results file does not contain any heap growth information. Please re-run in the newest version of BLeak.
         </div>
