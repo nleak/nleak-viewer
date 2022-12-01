@@ -1,0 +1,89 @@
+{
+  "leaks": [
+    {
+      "id": 97254,
+      "paths": [
+        [
+          { "type": 1, "indexOrName": "queueMicrotask" },
+          { "type": 3, "indexOrName": "__scope__" },
+          { "type": 4, "indexOrName": "queue" },
+          { "type": 1, "indexOrName": "tail" },
+          { "type": 1, "indexOrName": "list" }
+        ]
+      ],
+      "scores": {
+        "retainedSize": 16432,
+        "leakShare": 16432,
+        "transitiveClosureSize": 24744,
+        "ownedObjects": 2
+      },
+      "stacks": []
+    }
+  ],
+  "stackFrames": [],
+  "sourceFiles": {},
+  "heapStats": [
+    {
+      "numNodes": 116139,
+      "numEdges": 502588,
+      "totalSize": 12157182,
+      "hiddenSize": 1276112,
+      "arraySize": 990016,
+      "stringSize": 5317144,
+      "objectSize": 500592,
+      "codeSize": 2977016,
+      "closureSize": 770488,
+      "regexpSize": 10528,
+      "heapNumberSize": 1296,
+      "nativeSize": 91422,
+      "syntheticSize": 3040,
+      "consStringSize": 167392,
+      "slicedStringSize": 44192,
+      "symbolSize": 7656,
+      "unknownSize": 288
+    },
+    {
+      "numNodes": 116870,
+      "numEdges": 505613,
+      "totalSize": 12236318,
+      "hiddenSize": 1276320,
+      "arraySize": 1000768,
+      "stringSize": 5326104,
+      "objectSize": 500320,
+      "codeSize": 3032920,
+      "closureSize": 770488,
+      "regexpSize": 10528,
+      "heapNumberSize": 4880,
+      "nativeSize": 91422,
+      "syntheticSize": 3040,
+      "consStringSize": 167392,
+      "slicedStringSize": 44192,
+      "symbolSize": 7656,
+      "unknownSize": 288
+    },
+    {
+      "numNodes": 120736,
+      "numEdges": 518230,
+      "totalSize": 12475790,
+      "hiddenSize": 1277344,
+      "arraySize": 1085904,
+      "stringSize": 5397688,
+      "objectSize": 500256,
+      "codeSize": 3086040,
+      "closureSize": 770488,
+      "regexpSize": 10528,
+      "heapNumberSize": 33552,
+      "nativeSize": 91422,
+      "syntheticSize": 3040,
+      "consStringSize": 167392,
+      "slicedStringSize": 44192,
+      "symbolSize": 7656,
+      "unknownSize": 288
+    }
+  ],
+  "rankingEvaluation": {
+    "leakShare": [],
+    "transitiveClosureSize": [],
+    "retainedSize": []
+  }
+}

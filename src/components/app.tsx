@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BLeakResults from '../lib/results';
 import {default as HeapGrowthGraph, isRankingEvaluationComplete} from './heap_growth_graph';
+import HeapGrowthGraphV2 from './heap_growth_graph_v2';
 import LeakRootsAndStackTraces from './leak_roots_and_stack_traces';
 import SourceCodeViewer from './source_code_view';
 import SourceFileManager from '../model/source_file_manager';
@@ -175,6 +176,12 @@ export default class App extends React.Component<{}, AppState> {
             </p>
           </div>
         : ''}
+
+        <div className={"col-sm-7"}>
+          <h3>Live Heap Size V2</h3>
+          <HeapGrowthGraphV2 key="heap_growth_v2" bleakResults={this.state.bleakResults} />
+        </div>
+
         {this.state.state === ViewState.DISPLAYING_FILE ? <div key="bleakResults">
           <div className="row">
             <div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
