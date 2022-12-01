@@ -178,19 +178,21 @@ export default class App extends React.Component<{}, AppState> {
           </div>
         : ''}
 
-        <div className={"col-sm-7"}>
-          <h3>Live Heap Size V2</h3>
-          <HeapGrowthGraphV2 key="heap_growth_v2" bleakResults={this.state.bleakResults} />
-        </div>
-
-		<div className={"col-sm-7"}>
-          <h3>Heap Size Summary</h3>
-          <SummaryPieGraph key="summary_pie" bleakResults={this.state.bleakResults} />
-        </div>
-
         {this.state.state === ViewState.DISPLAYING_FILE ? <div key="bleakResults">
           <div className="row">
             <div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
+			<h3>Live Heap Size V2</h3>
+			<HeapGrowthGraphV2 key="heap_growth_v2" bleakResults={this.state.bleakResults} />
+			</div>
+		</div>
+		<div className="row">
+			<div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
+			<h3>Heap Size Summary</h3>
+			<SummaryPieGraph key="summary_pie" bleakResults={this.state.bleakResults} />
+			</div>
+		</div>
+		<div className="row">
+			<div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
               <h3>Live Heap Size</h3>
               <HeapGrowthGraph key="heap_growth" bleakResults={this.state.bleakResults} />
             </div>

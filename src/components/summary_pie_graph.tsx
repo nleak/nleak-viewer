@@ -12,19 +12,13 @@ interface HeapGrowthGraphProps {
 
 const { heapStats } = nleakResult;
 const option = {
-  title: {
-    text: 'Snapshot Size Summary',
-	left: 'center'
-  },
   tooltip: {
     trigger: 'item'
   },
-  legend: {
-	orient:'vertical',
-  },
+  legend: {},
   dataset:{
 	source:[
-		['stack','1','2'],
+		['stack','1','2','3'],
 		['Hidden Size'].concat(heapStats.map((h) => h.hiddenSize)),
 		['Array Size'].concat(heapStats.map((h) => h.arraySize)),
 		['Array Size'].concat(heapStats.map((h) => h.arraySize)), 
@@ -32,7 +26,7 @@ const option = {
 		['Object Size'].concat(heapStats.map((h) => h.objectSize)), 
 		['Code Size'].concat(heapStats.map((h) => h.codeSize)),
 		['Closure Size'].concat(heapStats.map((h) => h.closureSize)), 
-		['Regexp Size'].concat(heapStats.map((h) => h.regexpSize)), ,
+		['Regexp Size'].concat(heapStats.map((h) => h.regexpSize)), 
 		['Heap Number Size'].concat(heapStats.map((h) => h.heapNumberSize)), 
 		['Native Size'].concat(heapStats.map((h) => h.nativeSize)),
 		['Synthetic Size'].concat(heapStats.map((h) => h.syntheticSize)), 
@@ -45,8 +39,8 @@ const option = {
   series: [
     {
       type: 'pie',
-      radius: '20%',
-	  center: ['50%','50%'],
+      radius: 50,
+	  center: ['25%','50%'],
 	  emphasis: {
 		itemStyle: {
 			shadowBlur: 10,
@@ -57,11 +51,27 @@ const option = {
     },
 	{
 	  type: 'pie',
-	  radius: '20%',
+	  radius: 50,
 	  center: ['50%','50%'],
 	  encode:{
 		itemName:'stack',
 		value: '2'
+	  },
+	  emphasis: {
+		itemStyle: {
+			shadowBlur: 10,
+			shadowOffsetX: 0,
+			shadowColor: 'rgba(0, 0, 0, 0.5)'
+		  }
+		}
+	},
+	{
+	  type: 'pie',
+	  radius: 50,
+	  center: ['75%','50%'],
+	  encode:{
+		itemName:'stack',
+		value: '3'
 	  },
 	  emphasis: {
 		itemStyle: {
@@ -88,6 +98,7 @@ class SummaryPieGraph extends React.Component<HeapGrowthGraphProps> {
   }
 
   public render() {
+	console.log(option.dataset.source);
     return <div>
       <ReactEcharts option={option} />
     </div>

@@ -5,6 +5,7 @@ import BLeakResults from "../lib/results";
 import { SnapshotSizeSummary } from "../common/interfaces";
 
 const nleakResult = require("./test_data/result.json");
+const BYTES_PER_MB = 1024 * 1024;
 
 interface HeapGrowthGraphProps {
   bleakResults: BLeakResults;
@@ -12,9 +13,6 @@ interface HeapGrowthGraphProps {
 
 const { heapStats } = nleakResult;
 const option = {
-  title: {
-    text: 'Stacked Line'
-  },
   tooltip: {
     trigger: 'axis'
   },
@@ -33,31 +31,28 @@ const option = {
     }
   },
   xAxis: {
+	name: 'Round Trips Completed',
+	nameLocation: 'middle',
+	nameGap: 20,
     type: 'category',
     boundaryGap: false,
-    data: heapStats.map((_, i) => `snapshot-${i+1}`)
+    data: heapStats.map((_, i) => `${i+1}`)
   },
   yAxis: {
-    type: 'value'
+	name: 'Live Heap Size',
+	nameLocation: 'middle',
+    nameGap: 50,
+    type: 'value',
+	axisLabel: {
+		formatter: '{value} MB'
+	}
   },
   series: [
     {
       name: 'Total Size',
       type: 'line',
       stack: 'Total',
-      data: heapStats.map((h) => h.totalSize)
-    },
-    {
-      name: 'Nodes Num',
-      type: 'line',
-      stack: 'Total',
-      data: heapStats.map((h) => h.numNodes)
-    },
-    {
-      name: 'Edges Num',
-      type: 'line',
-      stack: 'Total',
-      data: heapStats.map((h) => h.numEdges)
+      data: heapStats.map((h) => h.totalSize/ BYTES_PER_MB)
     }
   ]
 };
