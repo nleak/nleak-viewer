@@ -1,6 +1,7 @@
 import * as React from 'react';
 import BLeakResults from '../lib/results';
 import {default as HeapGrowthGraph, isRankingEvaluationComplete} from './heap_growth_graph';
+import PieChart from './summary_pie_chart';
 import LeakRootsAndStackTraces from './leak_roots_and_stack_traces';
 import SourceCodeViewer from './source_code_view';
 import SourceFileManager from '../model/source_file_manager';
@@ -180,6 +181,7 @@ export default class App extends React.Component<{}, AppState> {
             <div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
               <h3>Live Heap Size</h3>
               <HeapGrowthGraph key="heap_growth" bleakResults={this.state.bleakResults} />
+			  <PieChart heapStats={this.state.bleakResults.heapStats} />
             </div>
             {rankEvalComplete ? <div key="rankingEvalTable" className="col-sm-5">
               <h3>Growth Reduction for Top Leaks Fixed</h3>
