@@ -9,6 +9,7 @@ import Location from '../model/location';
 import StackTraceManager from '../model/stack_trace_manager';
 import GrowthReductionTable from './growth_reduction_table';
 import GrowthReductionGraph from './growth_reduction_graph';
+import SummaryPieGraph from './summary_pie_graph';
 
 const enum ViewState {
   WAIT_FOR_FILE,
@@ -180,6 +181,11 @@ export default class App extends React.Component<{}, AppState> {
         <div className={"col-sm-7"}>
           <h3>Live Heap Size V2</h3>
           <HeapGrowthGraphV2 key="heap_growth_v2" bleakResults={this.state.bleakResults} />
+        </div>
+
+		<div className={"col-sm-7"}>
+          <h3>Heap Size Summary</h3>
+          <SummaryPieGraph key="summary_pie" bleakResults={this.state.bleakResults} />
         </div>
 
         {this.state.state === ViewState.DISPLAYING_FILE ? <div key="bleakResults">
