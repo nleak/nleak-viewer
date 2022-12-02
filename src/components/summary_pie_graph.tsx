@@ -68,7 +68,6 @@ class SummaryPieGraph extends React.Component<HeapGrowthGraphProps> {
   }
 
   public render() {
-	console.log(option.dataset.source);
     return <div>
       <ReactEcharts option={option} />
     </div>

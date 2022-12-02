@@ -43,6 +43,8 @@ const option = {
 	nameLocation: 'middle',
     nameGap: 50,
     type: 'value',
+	min: Math.floor(Math.min.apply(null,heapStats.map((h) => Math.floor(h.totalSize/ BYTES_PER_MB))))*0.8,
+	max: Math.ceil(Math.ceil(Math.max.apply(null,heapStats.map((h) => Math.ceil(h.totalSize/ BYTES_PER_MB))))*1.2),
 	axisLabel: {
 		formatter: '{value} MB'
 	}
