@@ -15,7 +15,6 @@ const option = {
   tooltip: {
     trigger: 'item'
   },
-  legend: {},
   dataset:{
 	source:[
 		['stack','1','2','3'],
@@ -37,38 +36,9 @@ const option = {
 	]
   },
   series: [
-    {
-      type: 'pie',
-      radius: 50,
-	  center: ['25%','50%'],
-	  emphasis: {
-		itemStyle: {
-			shadowBlur: 10,
-			shadowOffsetX: 0,
-			shadowColor: 'rgba(0, 0, 0, 0.5)'
-		}
-	  }
-    },
 	{
 	  type: 'pie',
-	  radius: 50,
-	  center: ['50%','50%'],
-	  encode:{
-		itemName:'stack',
-		value: '2'
-	  },
-	  emphasis: {
-		itemStyle: {
-			shadowBlur: 10,
-			shadowOffsetX: 0,
-			shadowColor: 'rgba(0, 0, 0, 0.5)'
-		  }
-		}
-	},
-	{
-	  type: 'pie',
-	  radius: 50,
-	  center: ['75%','50%'],
+	  radius: '100%',
 	  encode:{
 		itemName:'stack',
 		value: '3'

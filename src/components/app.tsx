@@ -10,6 +10,7 @@ import StackTraceManager from '../model/stack_trace_manager';
 import GrowthReductionTable from './growth_reduction_table';
 import GrowthReductionGraph from './growth_reduction_graph';
 import SummaryPieGraph from './summary_pie_graph';
+import { relative } from 'path';
 
 const enum ViewState {
   WAIT_FOR_FILE,
@@ -179,32 +180,30 @@ export default class App extends React.Component<{}, AppState> {
         : ''}
 
         {this.state.state === ViewState.DISPLAYING_FILE ? <div key="bleakResults">
-          <div className="row">
+          <div className="row" style={{marginBottom: "3rem"}}>
             <div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
-			<h3>Live Heap Size V2</h3>
+			<h3 style={{color:'grey'}}>Live Heap Size</h3>
 			<HeapGrowthGraphV2 key="heap_growth_v2" bleakResults={this.state.bleakResults} />
 			</div>
-		</div>
-		<div className="row">
 			<div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
-			<h3>Heap Size Summary</h3>
+			<h3 style={{color:'grey'}}>Heap Size Summary</h3>
 			<SummaryPieGraph key="summary_pie" bleakResults={this.state.bleakResults} />
 			</div>
 		</div>
-		<div className="row">
-			<div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
+		<div className="row" style={{marginTop: '1em'}}>
+			{/* <div className={rankEvalComplete ? "col-sm-7" : "col-sm"}>
               <h3>Live Heap Size</h3>
               <HeapGrowthGraph key="heap_growth" bleakResults={this.state.bleakResults} />
-            </div>
+            </div> */}
             {rankEvalComplete ? <div key="rankingEvalTable" className="col-sm-5">
-              <h3>Growth Reduction for Top Leaks Fixed</h3>
+              <h3 style={{color:'grey'}}>Growth Reduction for Top Leaks Fixed</h3>
               <GrowthReductionGraph bleakResults={this.state.bleakResults} />
               <GrowthReductionTable bleakResults={this.state.bleakResults} />
             </div> : ''}
           </div>
           <div className="row">
             <div className="col-sm-5">
-              <h3>Leak Roots and Stack Traces</h3>
+              <h3 style={{color:'grey'}}>Leak Roots and Stack Traces</h3>
               <LeakRootsAndStackTraces key="leak_root_list" onStackFrameSelect={(sf) => {
                 this.setState({
                   selectedLocation: sf
@@ -212,7 +211,7 @@ export default class App extends React.Component<{}, AppState> {
               }} bleakResults={this.state.bleakResults} stackTraces={this.state.stackTraces} selectedLocation={this.state.selectedLocation} />
             </div>
             <div className="col-sm-7">
-              <h3>Source Code</h3>
+              <h3 style={{color:'grey'}}>Source Code</h3>
               {this.state.sourceFileManager.getSourceFiles().length === 0 ? <p key="no_source_files">No source files found in results file.</p> :  <SourceCodeViewer key="source_code_viewer" files={this.state.sourceFileManager} stackTraces={this.state.stackTraces} location={this.state.selectedLocation} /> }
             </div>
           </div>

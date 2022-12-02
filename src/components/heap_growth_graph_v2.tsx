@@ -33,7 +33,7 @@ const option = {
   xAxis: {
 	name: 'Round Trips Completed',
 	nameLocation: 'middle',
-	nameGap: 20,
+	nameGap: 17,
     type: 'category',
     boundaryGap: false,
     data: heapStats.map((_, i) => `${i+1}`)
