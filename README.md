@@ -1,15 +1,14 @@
 # nleak-viewer
  
-An automatical memory detection and diagnosis tool for NodeJS.
+A data visualizer tool for [NLeak](https://www.npmjs.com/package/nleak). 
  
 ## Background
  
 - `src` folder contains all src code for `nleak-viewer`
-    <!-- + NodeJS driver
-    + Heap analysis
-    + Leak detection & debugging algorithms
-    + Reporter
-    + ... -->
+    + Heap Snapshot Lib
+    + React Components
+    + React Model
+    + ...
 - `public` folder contains required html files for formatting 
     + Frontend structure format logic
     + ...
@@ -18,13 +17,11 @@ An automatical memory detection and diagnosis tool for NodeJS.
 ## Development
  
 ### Local Development
+- `git clone https://github.com/nleak/nleak-viewer.git`
 - `npm i`
-- `npm run dev`
+- `npm run start`
  
-The `dev` script will start `nodemon` to monitor all TypeScript changes and compile
-them into JavaScript and put to `build` folder.
- 
-For local testing, currently we support driver tests. Simply run `npm run test:driver`.
+For local testing, simply run `npm run start`.
 ## How to use NLeak-Viewer
  
 NLeak viewer is a tool built in reactjs that allows you to visualize the heap snapshot growth of your application. To use it, simply go to https://nleak-viewer.vercel.app/ and upload your nleak_result.json file.
